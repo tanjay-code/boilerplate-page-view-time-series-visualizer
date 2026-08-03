@@ -8,12 +8,10 @@ register_matplotlib_converters()
 df = pd.read_csv('fcc-forum-pageviews.csv', parse_dates=['date'], index_col='date')
 
 # Clean data
-q1 = df['value'].quantile(0.025)
-q2 = df['value'].quantile(0.975)
-df = df[(df['value'] >= q1) & (df['value'] <= q2)]
+df = df[(df['value'] >= df['value'].quantile(0.025)) & (df['value'] <= df['value'].quantile(0.975))]
 
 #to fix the df.count(numeric_only=True) error in test_module:
-df.count = lambda *args, **kwargs: df['value'].count() #accepts any argument but gets and returns only the int count of value col
+df.count = lambda *args, **kwargs: int(df['value'].count()) #accepts any argument but gets and returns only the int count of value col
 
 def draw_line_plot():
     # Draw line plot
